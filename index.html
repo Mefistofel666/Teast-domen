@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор рандомных ругательств</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #e0e7ff);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.3s;
+            z-index: 1;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+        }
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #ff4c4c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        button {
+            background-color: #ff4c4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            outline: none;
+        }
+        button:hover {
+            background-color: #e03e3e;
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        p {
+            margin-top: 20px;
+            font-size: 20px;
+            min-height: 40px;
+            color: #555;
+            transition: color 0.3s;
+        }
+        p:hover {
+            color: #ff4c4c;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="container">
+        <h1>Генератор ругательств</h1>
+        <button onclick="generateInsult()">Сгенерировать ругательство</button>
+        <p id="insult"></p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        const insults = [
+            "Ты засранец!",
+            "Иди нафиг!",
+            "Пошел в жопу!",
+            "Ты дурак!",
+            "Мудила!",
+            "Отсоси у тракториста!",
+            "Пошел ты нафик, кусок говна!",
+            "Сука блядь!",
+            "Долбоеб!",
+            "Дебил!",
+            "Урод!",
+            "Жлоб!",
+            "Козел!",
+            "Петух!",
+            "Баран!",
+            "Тупица!",
+            "Гнида!",
+            "Хамло!",
+            "Дерьмо!",
+            "Придурок!",
+            "Болван!",
+            "Шакал!",
+            "Падла!",
+            "Свинья!",
+            "Дятел!",
+            "Кастрюля!",
+            "Кретин!",
+            "Тварь!",
+            "Мудак!",
+            "Идиот!",
+            "Лох!",
+            "Скотина!",
+            "Псих!",
+            "Гад!",
+            "Тупой!",
+            "Чмо!",
+            "Долговязый!",
+            "Кретинище!",
+            "Кусок дерьма!",
+            "Сосунок!",
+            "Задрот!",
+            "Ублюдок!",
+            "Козлина!",
+            "Тупорылая!",
+            "Мразь!",
+            "Криворукий!",
+            "Лузер!",
+            "Тупоголовый!",
+            "Слабак!",
+            "Говнюк!",
+            "Долгожитель!",
+            "Лентяй!",
+            "Дебилушка!",
+            "Петля!",
+            "Буржуй!",
+            "Шизик!",
+            "Тупица с гвоздями!",
+            "Скворечник!",
+            "Голова с говном!",
+            "Кусок дерьма!",
+            "Мудрец без мозгов!",
+            "Курьер дерьма!",
+            "Долговязый!",
+            "Пустобрех!",
+            "Козел с рогами!",
+            "Тупоголовый!",
+            "Мозгоправ!",
+            "Психопат!",
+            "Шарик с дыркой!",
+            "Ублюдок с гвоздями!",
+            "Тупая курица!",
+            "Гад с говном!",
+            "Мразь без души!",
+            "Тупая свинья!",
+            "Ляля с дерьмом!",
+            "Барашка с рогами!",
+            "Хрен с гвоздями!",
+            "Кусок мяса!",
+            "Тупая голова!",
+            "Кретин с рогами!",
+            "Псих с гвоздями!",
+            "Свинья с рогами!",
+            "Козел с гвоздями!",
+            "Ложка дерьма!",
+            "Долгожитель с гвоздями!",
+            "Тупая свинья!",
+            "Барашка с дерьмом!",
+            "Мозг с гвоздями!",
+            "Шарик с дерьмом!",
+            "Ублюдок с дерьмом!",
+            "Кусок дерьма!",
+            "Тупая курица!"
+        ];
+
+        function generateInsult() {
+            const randomIndex = Math.floor(Math.random() * insults.length);
+            const insult = insults[randomIndex];
+            document.getElementById("insult").textContent = insult;
+            particlesJS("particles-js", {
+                particles: {
+                    number: {
+                        value: 30,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: "#ff4c4c"
+                    },
+                    shape: {
+                        type: "circle",
+                        stroke: {
+                            width: 0,
+                            color: "#000000"
+                        },
+                        polygon: {
+                            nb_sides: 5
+                        },
+                        image: {
+                            src: "img/github.svg",
+                            width: 100,
+                            height: 100
+                        }
+                    },
+                    opacity: {
+                        value: 0.5,
+                        random: false,
+                        anim: {
+                            enable: false,
+                            speed: 1,
+                            opacity_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 5,
+                        random: true,
+                        anim: {
+                            enable: false,
+                            speed: 40,
+                            size_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#ff4c4c",
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 6,
+                        direction: "none",
+                        random: false,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: "repulse"
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: "push"
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 400,
+                            line_linked: {
+                                opacity: 1
+                            }
+                        },
+                        bubble: {
+                            distance: 400,
+                            size: 40,
+                            duration: 2,
+                            opacity: 8,
+                            speed: 3
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4
+                        },
+                        push: {
+                            particles_nb: 4
+                        },
+                        remove: {
+                            particles_nb: 2
+                        }
+                    }
+                },
+                retina_detect: true
+            });
+        }
+
+        particlesJS.load('particles-js', 'https://cdn.rawgit.com/VincentGarreau/particles.js/master/particles.json', function() {
+            console.log('callback - particles.js config loaded');
+        });
+    </script>
+</body>
+</html>
